@@ -3,10 +3,13 @@
 # Sprawozdanie z ćwiczeń z Git-a
 
 #### Pyt. 1
-### Jak usunąć folder *.idea* z GitHub-a?
+### Jak usunąć pliki związane z IntelliJ (np. folder *.idea*) z GitHub-a?
 
-  `git rm -r --cached .idea`  
-  `git commit`
+```
+git rm -r --cached .idea *.iml
+git commit
+git push
+```
 
 #### Pyt. 2  
 ### Zmienić brancha z powrotem na test. Jakie pojawiły się problemy i jak można je rozwiązać? Opisz dwa sposoby.  
@@ -19,7 +22,7 @@ Rozwiązanie 2: Użyć `git stash` i przełączyć gałąź.
 #### Pyt. 3  
 ### Opisać, jaka jest różnica między `git checkout HEAD~3` a `git reset --hard HEAD~3`  
 
-`git checkout HEAD~3` zmienia zawartość katalogu roboczego do postaci, jaka była 3 commity wstecz, ale nie usuwa commitów z historii - z technicznego punktu widzenia przesuwa tylko wskaźnik HEAD na trzeci commit wstecz. To taki "tryb przeglądania wcześniejszego commita". Jeżeli są jakieś zmienione i niezakomitowane pliki, to Git nie pozwoli na wykonanie tej operacji (chyba, że `git checkout -f`).    
+`git checkout HEAD~3` zmienia zawartość katalogu roboczego do postaci, jaka była 3 commity wstecz, ale nie usuwa commitów z historii - z technicznego punktu widzenia przesuwa tylko wskaźnik HEAD na trzeci commit wstecz (będziemy wtedy w stanie Detached HEAD). To taki "tryb przeglądania wcześniejszego commita". Jeżeli są jakieś zmienione i niezakomitowane pliki, to Git nie pozwoli na wykonanie tej operacji (chyba, że `git checkout -f`).    
 `git reset --hard HEAD~3` także przywraca zawartość katalogu roboczego do postaci sprzed 3 commitów, jednak jest to inna operacja. Z technicznego punktu widzenia przesuwa wskaźnik gałęzi (usuwa commity z historii). Niezakomitowane zmiany w plikach zostaną utracone. To podobno najniebezpieczniejsza komenda Git-a - rezultaty są często nieodwracalne.
 
 #### Pyt. 4  
@@ -27,6 +30,25 @@ Rozwiązanie 2: Użyć `git stash` i przełączyć gałąź.
 
 `revert` – odtwarza stan z podanego hasha, ale tworzy przy tym nowy commit, czyli żaden commit nie jest usuwany z historii.  
 `reset` – odtwarza stan z danego commita, ale usuwa przy tym commity z historii.
+
+Test `revert`:
+
+```
+$ git log 4723a0c085c0f102b41dbc5a535fbd8694db9904
+commit 4723a0c085c0f102b41dbc5a535fbd8694db9904
+Author: Michał Grobelny <michal.a.grobelny@capgemini.com>
+Date:   Sat Sep 21 17:01:10 2024 +0200
+
+    Revert "Add developer to pom.xml"
+
+    This reverts commit ccbdee64cccc20d2aaefd5bd33692850274c663e.
+
+commit ccbdee64cccc20d2aaefd5bd33692850274c663e
+Author: Michał Grobelny <michal.a.grobelny@capgemini.com>
+Date:   Sat Sep 21 12:36:23 2024 +0200
+
+    Add developer to pom.xml
+```
 
 #### Pyt. 5  
 ### Uruchomić komendę `git clean -n`. Przeanalizować, co by sie stało, gdyby nie było `-n`.  
@@ -55,4 +77,4 @@ Zdalnie:
 #### Pyt. 8  
 ### Co robi opcja `--no-commit`?  
 
-Opcja `--no-commit` powoduje, że nie końcu operacji (np. `merge` albo `revert`) nie zostanie wykonany automatycznie commit - użytkownik będzie miał możliwość przejrzenia rezultatu (w staging area) przed jego ostatecznym zatwierdzeniem.
+Opcja `--no-commit` powoduje, że nie końcu operacji (np. `merge` albo `revert`) nie zostanie wykonany automatycznie commit - użytkownik będzie miał możliwość przejrzenia rezultatu (w staging area) przed jego ostatecznym zatwierdzeniem - może to mieć duże znaczenie w przypadku bardziej skomplikowanych operacji, np. dużego merga.
