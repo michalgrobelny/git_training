@@ -50,6 +50,37 @@ Date:   Sat Sep 21 12:36:23 2024 +0200
     Add developer to pom.xml
 ```
 
+(Dodatkowy - ponadprogramowy - test `git rebase` - squash kilku commitów w jeden w celu uproszczenia historii commitów):
+
+```
+$ git rebase -i HEAD~4
+(...)  
+Auto-merging sprawozdanie.md
+CONFLICT (content): Merge conflict in sprawozdanie.md
+error: could not apply a0bfc6d... Update sprawozdanie.md - minor corrections
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+(...)
+Could not apply a0bfc6d... Update sprawozdanie.md - minor corrections
+
+mgrobeln@LPL-5CG4264ZVZ MINGW64 ~/Documents/Git/git_training (main|REBASE 3/4)
+$ git rebase --continue
+sprawozdanie.md: needs merge
+You must edit all merge conflicts and then
+mark them as resolved using git add
+(...)
+ 1 file changed, 27 insertions(+), 5 deletions(-)
+Successfully rebased and updated refs/heads/main.
+(...)
+$ git push origin main --force
+(...)
+Writing objects: 100% (3/3), 819 bytes | 819.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/michalgrobelny/git_training.git
+ + 89f1277...2a01c1a main -> main (forced update)
+```
+
 #### Pyt. 5  
 ### Uruchomić komendę `git clean -n`. Przeanalizować, co by sie stało, gdyby nie było `-n`.  
 
